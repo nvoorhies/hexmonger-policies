@@ -20,9 +20,12 @@ reviewer sees exactly what `git log` says was there on the date it says.
 ## Publishing
 
 `.github/workflows/pages.yml` deploys the repository root to Pages on
-every push to `main`, and turns Pages on for the repository the first
-time it runs (`actions/configure-pages` with `enablement: true`), so
-nothing needs clicking in the repository settings.
+every push to `main`. Pages itself has to be switched on once, by hand:
+**Settings → Pages → Build and deployment → Source: GitHub Actions**.
+(The workflow asks `actions/configure-pages` to do it, but the
+workflow's own token is not allowed to create a Pages site — the first
+run fails with "Resource not accessible by integration" until the
+switch is set; re-run it afterwards.)
 
 ## Where the source lives
 

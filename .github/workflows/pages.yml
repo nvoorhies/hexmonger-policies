@@ -1,9 +1,9 @@
 name: Publish to GitHub Pages
 
 # Deploys the repository root as a static site on every push to main.
-# `enablement: true` turns Pages on for the repository on the first run,
-# with "GitHub Actions" as the source, so the repository needs no manual
-# Pages setup — creating it public and pushing is the whole procedure.
+# Pages must be switched on once by hand (Settings → Pages → Source:
+# GitHub Actions): `enablement: true` would do it, but GITHUB_TOKEN is not
+# allowed to create a Pages site, so the first run fails until then.
 
 on:
   push:
