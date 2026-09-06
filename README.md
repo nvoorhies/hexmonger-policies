@@ -8,12 +8,10 @@ HTML, published with GitHub Pages. One directory per app:
 | Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) | [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
 | Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) | [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
 
-Published at `https://nvoorhies.github.io/hexmonger-policies/…`.
-`https://hexmonger.com/<app>/privacy.html` and
-`https://hexmonger.com/<app>/` are meant to reach the same pages — that
-is the shape Goblin Hunt already ships pointing at — but nothing serves
-`hexmonger.com` yet, so the `github.io` URLs are the ones the stores
-get, and a redirect later does not break them.
+Published at `https://nvoorhies.github.io/hexmonger-policies/…`, and
+meant to be reached as `https://policies.hexmonger.com/<app>/…` — the
+shape Goblin Hunt already ships pointing at. That name does not resolve
+yet; see "Policy URLs the apps are built against" for what is missing.
 
 Every page is self-contained — no build step, no shared assets, no
 JavaScript — so a page is exactly the file in this repo, and the store
@@ -117,23 +115,36 @@ a read when any of that changes.
 A published page is only useful at the address the app was shipped
 pointing at. Goblin Hunt compiles its policy URL in as
 `PrivacyConsent.POLICY_URL` and names the same one in both store
-listings, so that address and this repo's layout have to agree.
+listings, so that address and this repo have to agree.
 
-They now do: [nvoorhies/goblin-hunt#140][gh140] moved the constant to
-`https://hexmonger.com/goblin-hunt/privacy.html`, which is the
-`hexmonger.com/<app>/privacy.html` shape this repo is laid out for. It
-used to point at the site root with no app segment, which would have
-made Goblin Hunt's policy the thing `hexmonger.com/privacy.html` served
-and left the next app arguing with it over that address.
+It is now `https://policies.hexmonger.com/goblin-hunt/privacy.html`,
+after two corrections: [goblin-hunt#140][gh140] added the app segment,
+which the site root had no room for once there was a second app, and
+[goblin-hunt#141][gh141] moved it off the apex onto a subdomain of its
+own. A subdomain can be pointed at this site with a DNS record; the
+apex cannot, without deciding what the rest of `hexmonger.com` is for.
 
-What is left is hosting, not code. Nothing serves `hexmonger.com` yet,
-so the in-game row still opens an address that does not resolve; when
-something does serve it, one rule mapping `hexmonger.com/<app>/…` onto
-this repo covers every app at once. Until then the `github.io` URLs are
-what the stores get.
+**That name does not resolve yet.** Two things are missing, and they
+belong together — doing either alone is worse than doing neither:
+
+- a `CNAME` file in this repo's root holding `policies.hexmonger.com`,
+  which is what tells Pages to serve the site under that name;
+- a DNS `CNAME` record for `policies.hexmonger.com` onto
+  `nvoorhies.github.io`.
+
+Configuring the name without the DNS record behind it can take the site
+off the `github.io` address too, because Pages redirects the default
+name onto the custom one once it is set. Land the DNS record first, or
+both at once, and check that the pages answer before a store review
+depends on them.
+
+Until then the `github.io` URLs are the ones that work, and the ones to
+give the stores.
 
 Because the constant ships inside a build, changing it again costs a
 release — so the copy of `goblin-hunt/privacy.html` here has to keep
-naming the address the shipped game names.
+naming the address the shipped game names. It is a generated file:
+correcting it means re-copying from goblin-hunt, never editing here.
 
 [gh140]: https://github.com/nvoorhies/goblin-hunt/pull/140
+[gh141]: https://github.com/nvoorhies/goblin-hunt/pull/141
