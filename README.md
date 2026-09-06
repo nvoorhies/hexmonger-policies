@@ -3,25 +3,64 @@
 The privacy policies and support pages for Hexmonger apps, as plain static
 HTML, published with GitHub Pages. One directory per app:
 
-| App | Pages |
-| --- | --- |
-| Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) (support), [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
-| Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) (support), [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
+| App | Support | Privacy policy |
+| --- | --- | --- |
+| Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) | [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
+| Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) | [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
 
-Published at `https://nvoorhies.github.io/hexmonger-policies/…`. The
-plan is for `https://hexmonger.com/<app>/privacy.html` and
-`https://hexmonger.com/<app>/` to redirect here; until then the
-`github.io` URLs are the ones the stores get, and a redirect later does
-not break them.
+Published at `https://nvoorhies.github.io/hexmonger-policies/…`.
+`https://hexmonger.com/<app>/privacy.html` and
+`https://hexmonger.com/<app>/` are meant to reach the same pages — that
+is the shape Goblin Hunt already ships pointing at — but nothing serves
+`hexmonger.com` yet, so the `github.io` URLs are the ones the stores
+get, and a redirect later does not break them.
 
 Every page is self-contained — no build step, no shared assets, no
 JavaScript — so a page is exactly the file in this repo, and the store
 reviewer sees exactly what `git log` says was there on the date it says.
 
+## Layout
+
+One directory per app, holding exactly two pages and nothing else:
+
+| file | what it is | served at |
+| --- | --- | --- |
+| `<app>/index.html` | the support page | `<app>/` |
+| `<app>/privacy.html` | the privacy policy | `<app>/privacy.html` |
+
+No policy lives outside a game directory, and no game directory holds a
+second one. A policy that exists twice is a policy that will drift from the
+one the store reviewed and the shipped app links to, and the copy a reviewer
+opens is then a coin toss. The root `index.html` and `404.html` list both
+pages of every app.
+
+`scripts/check-pages.sh` checks that, and fails with the specific
+breakage:
+
+```sh
+scripts/check-pages.sh
+```
+
+- each app directory has its support page and its privacy policy, and no
+  other page;
+- no stray policy at the root;
+- the two pages of a pair link to each other;
+- `index.html` and `404.html` list both pages of every app;
+- every local link lands on a file that exists, and every page has a title.
+
+CI runs it on every push and pull request, and a layout that fails the
+check does not deploy.
+
+To add an app: make the directory, write `index.html` and `privacy.html`,
+add both to `index.html` and `404.html`, and run the check.
+
 ## Publishing
 
-`.github/workflows/pages.yml` deploys the repository root to Pages on
-every push to `main`. Pages itself has to be switched on once, by hand:
+`.github/workflows/pages.yml` deploys the site to Pages on every push to
+`main` — the repository root, less `scripts/` and the tooling
+directories, so what is served is the pages themselves.
+
+Pages itself has to be switched on once, by hand:
 **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 (The workflow asks `actions/configure-pages` to do it, but the
 workflow's own token is not allowed to create a Pages site — the first
@@ -76,11 +115,25 @@ a read when any of that changes.
 ## Policy URLs the apps are built against
 
 A published page is only useful at the address the app was shipped
-pointing at. Goblin Hunt has
-`https://hexmonger.com/privacy.html` compiled into it
-(`PrivacyConsent.POLICY_URL`) and named in both store listings — note
-that it carries **no app segment**, unlike the
-`hexmonger.com/<app>/privacy.html` shape above. Whatever serves
-`hexmonger.com` has to land that URL on `goblin-hunt/privacy.html` here,
-or the constant in the game has to change and ship. Neither is done
-yet.
+pointing at. Goblin Hunt compiles its policy URL in as
+`PrivacyConsent.POLICY_URL` and names the same one in both store
+listings, so that address and this repo's layout have to agree.
+
+They now do: [nvoorhies/goblin-hunt#140][gh140] moved the constant to
+`https://hexmonger.com/goblin-hunt/privacy.html`, which is the
+`hexmonger.com/<app>/privacy.html` shape this repo is laid out for. It
+used to point at the site root with no app segment, which would have
+made Goblin Hunt's policy the thing `hexmonger.com/privacy.html` served
+and left the next app arguing with it over that address.
+
+What is left is hosting, not code. Nothing serves `hexmonger.com` yet,
+so the in-game row still opens an address that does not resolve; when
+something does serve it, one rule mapping `hexmonger.com/<app>/…` onto
+this repo covers every app at once. Until then the `github.io` URLs are
+what the stores get.
+
+Because the constant ships inside a build, changing it again costs a
+release — so the copy of `goblin-hunt/privacy.html` here has to keep
+naming the address the shipped game names.
+
+[gh140]: https://github.com/nvoorhies/goblin-hunt/pull/140

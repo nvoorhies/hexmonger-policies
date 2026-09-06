@@ -1,6 +1,8 @@
 name: Publish to GitHub Pages
 
-# Deploys the repository root as a static site on every push to main.
+# Checks the page layout on every push and pull request, and on pushes to
+# main deploys the pages as a static site.
+#
 # Pages must be switched on once by hand (Settings → Pages → Source:
 # GitHub Actions): `enablement: true` would do it, but GITHUB_TOKEN is not
 # allowed to create a Pages site, so the first run fails until then.
@@ -8,6 +10,7 @@ name: Publish to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -15,23 +18,42 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
-  deploy:
+  # One support page and one privacy policy per game directory, cross-linked
+  # and listed on the root page and the 404. A broken layout does not deploy.
+  check:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: ./scripts/check-pages.sh
+
+  deploy:
+    needs: check
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    # On the deploy job rather than the workflow, so a pull request's check
+    # run cannot cancel a deployment of main.
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      # Stage what gets served, so the site is the pages and nothing else.
+      # upload-pages-artifact drops .git and .github on its own but would
+      # otherwise publish scripts/ as site content.
+      - run: |
+          mkdir _site
+          tar -cf - --exclude=./.git --exclude=./.github \
+                    --exclude=./scripts --exclude=./_site . |
+            tar -xf - -C _site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
