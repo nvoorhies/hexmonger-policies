@@ -3,10 +3,10 @@
 The privacy policies and support pages for Hexmonger apps, as plain static
 HTML, published with GitHub Pages. One directory per app:
 
-| App | Pages |
-| --- | --- |
-| Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) (support), [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
-| Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) (support), [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
+| App | Support | Privacy policy |
+| --- | --- | --- |
+| Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) | [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
+| Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) | [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
 
 Published at `https://nvoorhies.github.io/hexmonger-policies/…`. The
 plan is for `https://hexmonger.com/<app>/privacy.html` and
@@ -18,10 +18,46 @@ Every page is self-contained — no build step, no shared assets, no
 JavaScript — so a page is exactly the file in this repo, and the store
 reviewer sees exactly what `git log` says was there on the date it says.
 
+## Layout
+
+One directory per app, holding exactly two pages and nothing else:
+
+| file | what it is | served at |
+| --- | --- | --- |
+| `<app>/index.html` | the support page | `<app>/` |
+| `<app>/privacy.html` | the privacy policy | `<app>/privacy.html` |
+
+No policy lives outside a game directory, and no game directory holds a
+second one. A policy that exists twice is a policy that will drift from the
+one the store reviewed and the shipped app links to, and the copy a reviewer
+opens is then a coin toss. The root `index.html` and `404.html` list both
+pages of every app.
+
+`scripts/check-pages.sh` checks that, and fails with the specific
+breakage:
+
+```sh
+scripts/check-pages.sh
+```
+
+- each app directory has its support page and its privacy policy, and no
+  other page;
+- no stray policy at the root;
+- the two pages of a pair link to each other;
+- `index.html` and `404.html` list both pages of every app;
+- every local link lands on a file that exists, and every page has a title.
+
+CI runs it on every push and pull request, and a layout that fails the
+check does not deploy.
+
+To add an app: make the directory, write `index.html` and `privacy.html`,
+add both to `index.html` and `404.html`, and run the check.
+
 ## Publishing
 
-`.github/workflows/pages.yml` deploys the repository root to Pages on
-every push to `main`. Pages itself has to be switched on once, by hand:
+`.github/workflows/pages.yml` deploys the site to Pages on
+every push to `main` — the repository root, less `scripts/` and the
+tooling directories, so what is served is the pages themselves. Pages itself has to be switched on once, by hand:
 **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 (The workflow asks `actions/configure-pages` to do it, but the
 workflow's own token is not allowed to create a Pages site — the first
