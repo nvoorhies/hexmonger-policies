@@ -85,7 +85,18 @@ git branch -D policies-site
 
 That worked while there was one app. With a second, the subtree can no
 longer own the root — one app's push would erase the other's directory —
-so pages arrive per app instead.
+so pages arrive per app instead, copied across the same way Goblin Hunt's
+are:
+
+```sh
+# from a Castles-in-the-Sand checkout
+cp store/site/castles-in-the-sand/*.html ../hexmonger-policies/castles-in-the-sand/
+```
+
+Both pages are hand-authored HTML there, but `privacy.html` mirrors
+`PRIVACY.md` at that repo's root — the file the game itself renders on
+its Settings screen. Edit the markdown first and carry the change here,
+or the policy a reviewer reads and the policy the app shows will differ.
 
 ### Goblin Hunt
 
