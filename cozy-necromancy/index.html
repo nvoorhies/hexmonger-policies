@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Cozy Necromancy</title>
+<style>
+  :root {
+    --bg: #faf7f2; --fg: #24201c; --muted: #5d564d;
+    --rule: #ddd5c9; --link: #6b4f8a; --card: #f2ece2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17151a; --fg: #e6e1d8; --muted: #a49c92;
+      --rule: #322d38; --link: #b494d8; --card: #201d26;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2.5rem 1.25rem 5rem;
+    background: var(--bg); color: var(--fg);
+    font: 16px/1.65 Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  main { max-width: 42rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .35rem; }
+  h2 { font-size: 1.2rem; margin: 2.5rem 0 .6rem; }
+  h3 { font-size: 1rem; margin: 1.6rem 0 .3rem; }
+  .updated { color: var(--muted); font-size: .9rem; margin: 0 0 2rem; }
+  a { color: var(--link); }
+  ul { padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+  .contact {
+    background: var(--card); border-left: 3px solid var(--rule);
+    padding: 1rem 1.1rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0;
+  }
+  .contact p { margin: .3rem 0; }
+  code { font-size: .9em; overflow-wrap: anywhere; }
+  footer { color: var(--muted); font-size: .9rem; margin-top: 3rem; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Support</h1>
+<p class="updated">Cozy Necromancy</p>
+
+<div class="contact">
+<p><strong>Email:</strong>
+<a href="mailto:support@hexmonger.com">support@hexmonger.com</a></p>
+<p>We read everything and usually reply within a few days.</p>
+</div>
+
+<p>If you are writing about a bug, the two things that help most are your device
+and OS version, and the version number shown at the bottom of the title screen.
+On a computer, your graphics card and the game's log file help too — it is
+<code>logs/godot.log</code>, in the same folder as your saves (below). A
+screenshot is worth a paragraph.</p>
+
+<p>Purchases and refunds on Steam are handled by Steam, at
+<a href="https://help.steampowered.com/">help.steampowered.com</a>; we cannot
+see or change them.</p>
+
+<h2>Common questions</h2>
+
+<h3>Where are my saves?</h3>
+<p><strong>On a phone or tablet</strong>, in the app's private storage. They are
+not on a server, so they do not follow you between devices on their own — but
+they are included in your device's own backup (iCloud on iOS, Google backup on
+Android), which will carry them to a new phone. Deleting the app deletes the
+saves.</p>
+<p><strong>On a computer</strong>, in a folder in your user account:</p>
+<ul>
+  <li>Windows: <code>%APPDATA%\Godot\app_userdata\Cozy Necromancy</code></li>
+  <li>macOS: <code>~/Library/Application Support/Godot/app_userdata/Cozy Necromancy</code></li>
+  <li>Linux and Steam Deck: <code>~/.local/share/godot/app_userdata/Cozy Necromancy</code></li>
+</ul>
+<p>With Steam Cloud on, Steam keeps a copy of the <code>saves</code> folder in it
+with your Steam account and puts it back on any computer you play on. Settings
+are left per computer, so a Steam Deck and a desktop can each keep their
+own.</p>
+
+<h3>I lost progress after reinstalling.</h3>
+<p>On iOS and Android, deleting an app removes its private storage, and a fresh
+install starts empty. Restoring the device from a backup made while the game was
+installed brings the saves back; reinstalling from the store does not.</p>
+<p>On a computer, uninstalling from Steam leaves the save folder above alone, so
+reinstalling picks up where you were. If the folder is gone, Steam Cloud will
+restore your saves when the game next starts, provided it was on.</p>
+
+<h3>Why does the game ask about ads when I first open it?</h3>
+<p>Only the phone and tablet versions carry ads, and players there in the EEA,
+the UK and Switzerland see a consent form required by law before any ad may be
+requested. You can reopen it from the game's settings and change your answer
+whenever you like.</p>
+
+<h3>Do I have to watch ads?</h3>
+<p>No. On phones and tablets, ads appear only where you ask for a hint after your
+free hints are used — on a puzzle, or from the hint button in your journal — and
+you choose whether to watch. Every puzzle is solvable without a single hint. The
+Steam version has no ads at all.</p>
+
+<h3>Are the characters' conversations written by an AI on a server?</h3>
+<p>Some of it is written by a small language model that runs entirely on your
+device, using a file that ships inside the game: the villagers' small talk, the
+oracle's hint after a ritual goes wrong, and the routine filler records in the
+village archive. The story, the companions' dialogue and the clues are written
+by hand. The game does not talk to a server, and it works with the network
+off.</p>
+
+<h3>The game is slow, or drains the battery.</h3>
+<p>Running the language model on-device is the most demanding thing the game
+does, especially on older hardware. While playing, open Settings and, under
+Perf Diagnostics, turn off <em>Enable AI / LLM</em>, then restart the game: the
+villagers and the oracle fall back to written lines, and the story does not
+depend on the model.</p>
+
+<h3>How do I report something in the story that reads wrong?</h3>
+<p>Please do — with a screenshot and roughly where you were. Dialogue that
+contradicts itself is a bug like any other.</p>
+
+<h2>Privacy</h2>
+<p>What the game collects, and what it does not, is set out in the
+<a href="privacy.html">Privacy Policy</a>.</p>
+
+<hr>
+<footer>
+<p>Cozy Necromancy · <a href="privacy.html">Privacy Policy</a> · <a href="/">All Hexmonger policies</a></p>
+</footer>
+
+</main>
+</body>
+</html>

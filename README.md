@@ -6,12 +6,12 @@ HTML, published with GitHub Pages. One directory per app:
 | App | Support | Privacy policy |
 | --- | --- | --- |
 | Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) | [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
+| Cozy Necromancy | [`cozy-necromancy/`](cozy-necromancy/) | [`cozy-necromancy/privacy.html`](cozy-necromancy/privacy.html) |
 | Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) | [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
 
-Published at `https://nvoorhies.github.io/hexmonger-policies/…`, and
-meant to be reached as `https://policies.hexmonger.com/<app>/…` — the
-shape Goblin Hunt already ships pointing at. That name does not resolve
-yet; see "Policy URLs the apps are built against" for what is missing.
+Published at `https://policies.hexmonger.com/<app>/…`. The old
+`https://nvoorhies.github.io/hexmonger-policies/…` address still works
+and redirects there.
 
 Every page is self-contained — no build step, no shared assets, no
 JavaScript — so a page is exactly the file in this repo, and the store
@@ -98,6 +98,24 @@ Both pages are hand-authored HTML there, but `privacy.html` mirrors
 its Settings screen. Edit the markdown first and carry the change here,
 or the policy a reviewer reads and the policy the app shows will differ.
 
+### Cozy Necromancy
+
+Both pages are authored as `store/site/cozy-necromancy/` in
+[nvoorhies/cute-fantasy][cf] (private), next to the store records and
+the ad configuration they describe, and copied across whole:
+
+```sh
+# from a cute-fantasy checkout
+cp store/site/cozy-necromancy/*.html ../hexmonger-policies/cozy-necromancy/
+```
+
+One policy covers every build: the iOS and Android versions, which show
+an optional rewarded ad through Google AdMob, and the Steam version for
+Windows, macOS and Linux, which has no ads. `store/site/README.md` there
+lists what has to change with them.
+
+[cf]: https://github.com/nvoorhies/cute-fantasy
+
 ### Goblin Hunt
 
 `goblin-hunt/privacy.html` is **generated**, not written. Its source is
@@ -135,22 +153,13 @@ which the site root had no room for once there was a second app, and
 own. A subdomain can be pointed at this site with a DNS record; the
 apex cannot, without deciding what the rest of `hexmonger.com` is for.
 
-**That name does not resolve yet.** Two things are missing, and they
-belong together — doing either alone is worse than doing neither:
-
-- a `CNAME` file in this repo's root holding `policies.hexmonger.com`,
-  which is what tells Pages to serve the site under that name;
-- a DNS `CNAME` record for `policies.hexmonger.com` onto
-  `nvoorhies.github.io`.
-
-Configuring the name without the DNS record behind it can take the site
-off the `github.io` address too, because Pages redirects the default
-name onto the custom one once it is set. Land the DNS record first, or
-both at once, and check that the pages answer before a store review
-depends on them.
-
-Until then the `github.io` URLs are the ones that work, and the ones to
-give the stores.
+**That name is live.** `policies.hexmonger.com` is a DNS-only (grey
+cloud) `CNAME` on Cloudflare onto `nvoorhies.github.io`, set as this
+repository's custom domain under **Settings → Pages**, with HTTPS
+enforced. The site deploys from a workflow, so the custom domain lives in
+those settings rather than in a `CNAME` file here; do not add one. The
+record has to stay grey-cloud, or GitHub cannot verify the domain and
+renew the certificate.
 
 Because the constant ships inside a build, changing it again costs a
 release — so the copy of `goblin-hunt/privacy.html` here has to keep
