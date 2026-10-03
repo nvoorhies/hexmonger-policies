@@ -7,6 +7,7 @@ HTML, published with GitHub Pages. One directory per app:
 | --- | --- | --- |
 | Castles in the Sand | [`castles-in-the-sand/`](castles-in-the-sand/) | [`castles-in-the-sand/privacy.html`](castles-in-the-sand/privacy.html) |
 | Cozy Necromancy | [`cozy-necromancy/`](cozy-necromancy/) | [`cozy-necromancy/privacy.html`](cozy-necromancy/privacy.html) |
+| Tin Coffins | [`tin-coffins/`](tin-coffins/) | [`tin-coffins/privacy.html`](tin-coffins/privacy.html) |
 | Goblin Hunt | [`goblin-hunt/`](goblin-hunt/) | [`goblin-hunt/privacy.html`](goblin-hunt/privacy.html) |
 
 Published at `https://policies.hexmonger.com/<app>/…`. The old
